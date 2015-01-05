@@ -299,6 +299,10 @@ that `ace-jump-search-candidate' will use as an additional filter.")
   "Face for foreground of AceJump motion"
   :group 'ace-jump)
 
+(defun ace-jump-prompt-propertize (prompt-key)
+  (concat (propertize "Ace Jump [" 'face 'minibuffer-prompt)
+          (propertize prompt-key 'face 'hi-red-b)
+          (propertize "]: " 'face 'minibuffer-prompt)))
 
 (defvar ace-jump-mode-before-jump-hook nil
   "Function(s) to call just before moving the cursor to a selected match")
@@ -794,7 +798,7 @@ word-mode and char-mode"
 ;;;###autoload
 (defun ace-jump-char-mode (query-char)
   "AceJump char mode"
-  (interactive (list (read-char "Query Char:")))
+  (interactive (list (read-char (ace-jump-prompt-propertize "Query Char"))))
 
   ;; We should prevent recursion call this function.  This can happen
   ;; when you trigger the key for ace jump again when already in ace
@@ -817,7 +821,7 @@ You can set `ace-jump-word-mode-use-query-char' to nil to prevent
 asking for a head char, that will mark all the word in current
 buffer."
   (interactive (list (if ace-jump-word-mode-use-query-char
-                         (read-char "Head Char:")
+                         (read-char (ace-jump-prompt-propertize "Head Char"))
                        nil)))
 
   ;; We should prevent recursion call this function.  This can happen
